@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProdutoController;
-use App\Http\Controllers\VendedorController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -20,10 +20,10 @@ Route::get('/', function () {
     return view('produtos.layoutmaster');
 });
 
-Route::resource('produtos', ProdutoController::class);
+Route::resource('produtos', ProductController::class);
 
-Route::get('/vendedores/register', [VendedorController::class, 'create'])->name('vendedores.register');
-Route::post('/vendedores/register', [VendedorController::class, 'store']);
+Route::get('/vendedores/register', [VendorController::class, 'create'])->name('vendedores.register');
+Route::post('/vendedores/register', [VendorController::class, 'store']);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

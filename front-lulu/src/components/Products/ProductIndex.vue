@@ -21,26 +21,24 @@
                     <button @click="editProduct(product)">
                         Edit
                     </button>
-                    <button @click="deleteProduct(product)">
+                    <button @click="confirmDeleteProduct(product)">
                         Delete
                     </button>
+
                 </td>
             </tr>
-
         </tbody>
     </table>
-    <EditProductModal v-if="editMode" @close-modal="editMode = false" @product-updated="handleProductUpdated">
-    </EditProductModal>
+    <EditProductModalVue :product="productData" v-show="editMode" @productSaved="getProducts" />
 </template>
 
 <script>
 import axios from 'axios';
-import EditProductModal from './EditProductModal.vue';
+
+import EditProductModalVue from './EditProductModal.vue';
 
 export default {
-    components: {
-        EditProductModal
-    },
+
     data() {
         return {
             editMode: false,
@@ -56,10 +54,15 @@ export default {
             }
         }
     },
+    components: {
+        EditProductModalVue
+    },
     methods: {
+
         getProducts() {
 
             axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/getProducts`).then((response) => {
+                console.log(response)
 
                 this.products = response.data;
 
@@ -67,15 +70,31 @@ export default {
         },
 
         editProduct(product) {
+            this.editMode = true;
             this.productData.id = product.id;
             this.productData.description = product.description;
             this.productData.unity = product.unity;
             this.productData.isQuoted = product.isQuoted;
-            this.editMode = true;
-
-
+            document.getElementById('modal').showModal();
         },
+        deleteProduct(product) {
+            console.log(product);
+            axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/deleteProduct/${product.id}`, {
 
+            })
+                .then((response) => {
+                    console.log(response.data)
+                    this.getProducts()
+
+                })
+        },
+        confirmDeleteProduct(product) {
+            const shouldDelete = window.confirm('Tem certeza de que deseja deletar este produto?');
+
+            if (shouldDelete) {
+                this.deleteProduct(product);
+            }
+        },
 
 
     },
@@ -86,3 +105,6 @@ export default {
 
 
 </script>
+Route::post('deleteProduct/{id}', [ProductController::class, 'deleteProduct']);
+Product::where('id', $id)->delete();
+        return response()->json('Success');

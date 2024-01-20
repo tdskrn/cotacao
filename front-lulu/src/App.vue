@@ -1,16 +1,9 @@
-<script>
-import ProductIndex from "./components/Products/ProductIndex.vue"
-
-export default {
-  components: {
-    ProductIndex,
-  }
-}
-
-</script>
-
 <template>
-  <ProductIndex> </ProductIndex>
+  <nav>
+    <router-link to="/">Dashboard</router-link> |
+
+  </nav>
+  <router-view />
 </template>
 
-<style scoped></style>
+<style></style>

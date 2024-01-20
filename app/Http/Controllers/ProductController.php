@@ -34,12 +34,12 @@ class ProductController extends Controller
     public function updateProduct(Request $request, $id)
     {
         $request->validate([
-            'name' => ['required'],
+            'description' => ['required'],
             'unity' => ['required'],
         ]);
 
         Product::where('id', $id)->update([
-            'name' => $request->name,
+            'description' => $request->description,
             'unity' => $request->unity,
             'isQuoted' => $request->isQuoted,
         ]);
@@ -48,7 +48,11 @@ class ProductController extends Controller
 
     public function deleteProduct($id)
     {
-        Product::where('id', $id)->delete();
-        return response()->json('Success');
+        try {
+            Product::where('id', $id)->delete();
+            return response()->json('Success');
+        } catch (\Exception $e) {
+            return response()->json('' . $e->getMessage());
+        }
     }
 }
