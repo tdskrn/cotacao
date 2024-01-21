@@ -10,10 +10,17 @@ class ProductController extends Controller
 
     public function getProducts()
     {
-        $products = Product::all();
+        $products = Product::paginate(10);
+
         return response()->json($products);
     }
 
+    public function searchProducts(Request $request)
+    {
+        $term = $request->input("term");
+        $results = Product::where('description', 'like', '%' . $term . '%')->paginate(10);
+        return response()->json($results);
+    }
 
     public function storeProduct(Request $request)
     {
