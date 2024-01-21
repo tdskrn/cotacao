@@ -1,6 +1,7 @@
 <template>
+  <h2>Seja Bem Vindo</h2>
   <nav>
-    <router-link to="/">Dashboard</router-link> |
+    <router-link to="/">Produtos</router-link> |
 
   </nav>
   <router-view />
