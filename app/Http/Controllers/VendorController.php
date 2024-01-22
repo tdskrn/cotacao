@@ -6,5 +6,7 @@ use Illuminate\Http\Request;
 
 class VendorController extends Controller
 {
-    //
 }
+
+
+// protected $fillable = ['name', 'email', 'telephone', 'password'];

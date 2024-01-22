@@ -35,7 +35,7 @@ export default {
 
     data() {
         return {
-
+            token: localStorage.getItem('authToken') || null,
         }
     },
     props: {
@@ -53,6 +53,10 @@ export default {
                 description: this.product.description,
                 unity: this.product.unity,
                 isQuoted: this.product.isQuoted,
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${this.token}`
+                }
             }).then((response) => {
                 console.log(response.data)
                 this.$emit('productSaved');

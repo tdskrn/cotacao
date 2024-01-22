@@ -1,6 +1,7 @@
 
 
 <template>
+    <button @click="logout()" @submit.prevent>Logout</button>
     <div class="search-bar">
         <input v-model="searchTerm" placeholder="Digite para pesquisar" />
         <button @click="search">Pesquisar</button>
@@ -51,6 +52,7 @@ export default {
         return {
             editMode: false,
             products: {},
+            token: localStorage.getItem('authToken') || null,
             productData: new Form({
                 id: '',
                 description: '',
@@ -77,7 +79,11 @@ export default {
 
         getProducts(url) {
 
-            axios.get(url || `${import.meta.env.VITE_API_BASE_URL}/api/getProducts`).then((response) => {
+            axios.get(url || `${import.meta.env.VITE_API_BASE_URL}/api/getProducts`, {
+                headers: {
+                    'Authorization': `Bearer ${this.token}`
+                }
+            }).then((response) => {
 
 
                 this.products = response.data.data;
@@ -91,8 +97,21 @@ export default {
 
             })
         },
+
+        checkAuthentication() {
+            const authToken = localStorage.getItem('authToken');
+            console.log('Token', authToken);
+            if (!authToken) {
+                this.$router.push('/login');
+            }
+        },
+
         search() {
-            this.getProducts(`${import.meta.env.VITE_API_BASE_URL}/api/searchProducts?term=${this.searchTerm}`);
+            this.getProducts(`${import.meta.env.VITE_API_BASE_URL}/api/searchProducts?term=${this.searchTerm}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.token}`
+                }
+            });
         },
 
         editProduct(product) {
@@ -106,7 +125,9 @@ export default {
         deleteProduct(product) {
             console.log(product);
             axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/deleteProduct/${product.id}`, {
-
+                headers: {
+                    'Authorization': `Bearer ${this.token}`
+                }
             })
                 .then((response) => {
                     console.log(response.data)
@@ -136,11 +157,30 @@ export default {
         calculateItemNumber(index) {
             const perPage = this.pagination.per_page || 1;
             return (this.pagination.current_page - 1) * perPage + index + 1;
+        },
+
+        logout() {
+            console.log(this.token);
+            axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/logout`, null, {
+                headers: {
+                    'Authorization': `Bearer ${this.token}`
+                }
+            }).then((response) => {
+                console.log(response.data)
+                localStorage.removeItem('authToken');
+                this.$router.push('/login');
+
+            }).catch((error) => {
+                console.log(error)
+                localStorage.removeItem('authToken');
+                this.$router.push('/login');
+            })
         }
 
 
     },
     mounted() {
+        this.checkAuthentication();
         this.getProducts()
     }
 }
