@@ -9,6 +9,8 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    const ROLE_ADMIN = 1;
+    const ROLE_USER = 0;
     public function login(Request $request)
     {
 
@@ -28,6 +30,7 @@ class AuthController extends Controller
         $token = $user->createToken($request->device_name)->plainTextToken;
 
         return response()->json([
+            'user' => $user,
             'token' => $token,
 
         ]);
@@ -49,6 +52,12 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'Falha ao registrar usuário'], 500);
         }
+    }
+
+    public function isAdmin(Request $request)
+    {
+        $isAdmin = $request->isAdmin == self::ROLE_ADMIN;
+        return response()->json(['isAdmin' => $isAdmin]);
     }
 
     public function logout(Request $request)

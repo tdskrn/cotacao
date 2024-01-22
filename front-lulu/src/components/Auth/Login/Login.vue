@@ -50,8 +50,15 @@ export default {
                 const token = response.data.token;
                 localStorage.setItem('authToken', token);
 
-                // Redirecione para a página de produtos ou outra página desejada
-                this.$router.push('/products');
+                // Redirecione para a página de produtos ou outra página 
+                const isAdmin = response.data.user.isAdmin;
+                localStorage.setItem('isAdmin', isAdmin);
+                if (isAdmin === 1) {
+                    this.$router.push('/products');
+                } else {
+                    this.$router.push('/vendors');
+                }
+
             } catch (error) {
                 console.error('Erro ao fazer login:', error);
 
