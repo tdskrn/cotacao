@@ -50,6 +50,9 @@ export default {
                 const token = response.data.token;
                 localStorage.setItem('authToken', token);
 
+                const user = response.data.user;
+                this.$store.commit('setUser', user);
+
                 // Redirecione para a página de produtos ou outra página 
                 const isAdmin = response.data.user.isAdmin;
                 localStorage.setItem('isAdmin', isAdmin);

@@ -1,4 +1,5 @@
 <template>
+    <h4>Seja bem vindo sr {{ user.name }}</h4>
     <h1>Vendors View</h1>
     <button @click="logout()">Logout</button>
 </template>
@@ -9,7 +10,11 @@ export default {
     name: "VendorsView",
     data() {
         return {
-            token: null
+            token: null,
+            user: {
+                name: '',
+                email: '',
+            }
         }
     },
     methods: {
@@ -29,6 +34,11 @@ export default {
                 localStorage.removeItem('authToken');
                 this.$router.push('/login');
             })
+        }
+    },
+    computed: {
+        user() {
+            return this.$store.state.user;
         }
     }
 }

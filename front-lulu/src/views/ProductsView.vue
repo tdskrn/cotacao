@@ -1,4 +1,5 @@
 <template>
+    <h4>Seja bem vindo sr {{ user.name }}</h4>
     <ProductIndex />
 </template>
 
@@ -18,6 +19,13 @@ export default {
     },
 
     methods: {},
+
+    computed: {
+        user() {
+            return this.$store.state.user;
+        }
+    }
+
 }
 </script>
 
