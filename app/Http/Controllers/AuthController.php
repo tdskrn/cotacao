@@ -40,12 +40,14 @@ class AuthController extends Controller
     {
         // protected $fillable = ['name', 'email', 'telephone', 'password'];
         try {
+
             $user = Vendor::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'telephone' => $request->telephone,
                 'password' => Hash::make($request->password),
             ]);
+
             $user->tokens()->delete();
             $token = $user->createToken($request->device_name)->plainTextToken;
             return response()->json(['message' => 'usuario registrado com sucesso', 'token' => $token, 'user' => $user], 201);
@@ -53,6 +55,8 @@ class AuthController extends Controller
             return response()->json(['error' => 'Falha ao registrar usuário'], 500);
         }
     }
+
+
 
     public function isAdmin(Request $request)
     {

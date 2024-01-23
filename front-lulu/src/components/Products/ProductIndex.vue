@@ -1,7 +1,8 @@
 
 
 <template>
-    <button @click="logout()" @submit.prevent>Logout</button>
+    <DashboardNavbar></DashboardNavbar>
+
     <div class="search-bar">
         <input v-model="searchTerm" placeholder="Digite para pesquisar" />
         <button @click="search">Pesquisar</button>
@@ -45,6 +46,7 @@
 import axios from 'axios';
 
 import EditProductModalVue from './EditProductModal.vue';
+import DashboardNavbar from '../Dashboard/DashboardNavbar.vue';
 
 export default {
 
@@ -73,7 +75,8 @@ export default {
         }
     },
     components: {
-        EditProductModalVue
+        EditProductModalVue,
+        DashboardNavbar,
     },
     methods: {
 

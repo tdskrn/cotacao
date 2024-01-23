@@ -2,6 +2,12 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\QuoteProductController;
+use App\Http\Controllers\VendorController;
+use App\Models\Quote;
+use App\Models\QuoteProduct;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +26,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-/** Rotas para produto */
+/** Rotas para Produto Admin */
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('getProducts', [ProductController::class, 'getProducts']);
     Route::get('searchProducts', [ProductController::class, 'searchProducts']);
@@ -29,8 +35,24 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('deleteProduct/{id}', [ProductController::class, 'deleteProduct']);
 });
 
+/** Rotas Vendedores Admin */
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('getVendors', [VendorController::class, 'getVendors']);
+    Route::post('updateVendor/{id}', [VendorController::class, 'updateVendor']);
+    Route::post('deleteVendor/{id}', [VendorController::class, 'deleteVendor']);
+});
+
+/** Rotas Cotações Admin */
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('getQuotes', [QuoteController::class, 'getQuotes']);
+    Route::get('getQuotedProducts', [QuoteProductController::class, 'getQuotedProducts']);
+    // Route::post('updateVendor/{id}', [VendorController::class, 'updateVendor']);
+    // Route::post('deleteVendor/{id}', [VendorController::class, 'deleteVendor']);
+    Route::post('storeQuote', [QuoteController::class, 'storeQuote']);
+});
 
 /** Rotas autenticacao */
 Route::middleware(['cors'])->post('login', [AuthController::class, 'login']);
 Route::middleware(['cors'])->post('register', [AuthController::class, 'register']);
+Route::middleware(['cors'])->post('register/admin', [AuthController::class, 'registerAdmin']);
 Route::middleware(['auth:sanctum'])->post('logout', [AuthController::class, 'logout']);

@@ -3,7 +3,10 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import WelcomeView from '../views/WelcomeView.vue'
 import Login from '../components/Auth/Login/Login.vue'
 import Register from '../components/Auth/Register/Register.vue'
-import VendorsView from '../views/VendorsView.vue'
+import VendorsAdminView from '../views/Admin/VendorsAdminView.vue'
+import DashboardView from '../views/Admin/DashboardView.vue'
+import VendorsUserView from '../views/VendorsUserView.vue'
+import QuotationView from '../views/Admin/QuotationView.vue'
 
 const routes = [
     {
@@ -24,7 +27,43 @@ const routes = [
     {
         path: '/vendors',
         name: 'vendor',
-        component: VendorsView
+        component: VendorsUserView
+    },
+    {
+        path: '/vendors-admin',
+        name: 'vendors-admin',
+        component: VendorsAdminView,
+        beforeEnter: (to, from, next) => {
+            if (userIsAdmin()) {
+                next()
+            } else {
+                next('/')
+            }
+        }
+    },
+    {
+        path: '/dashboard',
+        name: 'dashboard',
+        component: DashboardView,
+        beforeEnter: (to, from, next) => {
+            if (userIsAdmin()) {
+                next()
+            } else {
+                next('/')
+            }
+        }
+    },
+    {
+        path: '/quotations',
+        name: 'quotations',
+        component: QuotationView,
+        beforeEnter: (to, from, next) => {
+            if (userIsAdmin()) {
+                next()
+            } else {
+                next('/')
+            }
+        }
     },
 
     {
@@ -35,7 +74,7 @@ const routes = [
         // which is lazy-loaded when the route is visited.
         component: function () {
             return import(
-                /* webpackChunkName: "about" */ '../views/ProductsView.vue'
+                /* webpackChunkName: "about" */ '../views/Admin/ProductsView.vue'
             )
         },
         beforeEnter: (to, from, next) => {

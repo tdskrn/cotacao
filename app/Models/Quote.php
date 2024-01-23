@@ -9,5 +9,5 @@ class Quote extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['product_id', 'vendor_id', 'price'];
+    protected $fillable = ['start_date', 'end_date', 'status'];
 }

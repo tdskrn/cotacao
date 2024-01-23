@@ -36,7 +36,9 @@ export default {
 
     methods: {
         async login() {
+
             try {
+
                 const response = await axios.post(
                     `${import.meta.env.VITE_API_BASE_URL}/api/login`,
                     {
@@ -45,6 +47,7 @@ export default {
                         device_name: 'web', // Defina o nome do dispositivo conforme necessário
                     }
                 );
+
 
                 // Extraia o token da resposta e armazene no localStorage
                 const token = response.data.token;
@@ -56,8 +59,9 @@ export default {
                 // Redirecione para a página de produtos ou outra página 
                 const isAdmin = response.data.user.isAdmin;
                 localStorage.setItem('isAdmin', isAdmin);
+
                 if (isAdmin === 1) {
-                    this.$router.push('/products');
+                    this.$router.push('/dashboard');
                 } else {
                     this.$router.push('/vendors');
                 }

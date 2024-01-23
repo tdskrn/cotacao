@@ -12,5 +12,5 @@ class Vendor extends Authenticatable
 {
     use HasFactory, HasApiTokens, Notifiable;
 
-    protected $fillable = ['name', 'email', 'telephone', 'password'];
+    protected $fillable = ['name', 'email', 'telephone', 'password', 'isAdmin'];
 }

@@ -61,9 +61,16 @@ export default {
 
                     // Após o registro bem-sucedido, chame o método de login
                     await this.login();
+                    const isAdmin = response.data.user.isAdmin;
+                    localStorage.setItem('isAdmin', isAdmin);
 
-                    // O usuário foi autenticado, redirecione para a página de produtos
-                    this.$router.push('/products');
+                    if (isAdmin === 1) {
+                        this.$router.push('/dashboard');
+                    } else {
+                        this.$router.push('/vendors');
+                    }
+
+
                 }
             } catch (error) {
                 // Lógica de tratamento de erro
