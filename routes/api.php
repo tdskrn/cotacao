@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\QuotedProductController;
 use App\Http\Controllers\QuoteProductController;
 use App\Http\Controllers\VendorController;
 use App\Models\Quote;
@@ -45,10 +46,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
 /** Rotas Cotações Admin */
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('getQuotes', [QuoteController::class, 'getQuotes']);
-    Route::get('getQuotedProducts', [QuoteProductController::class, 'getQuotedProducts']);
+    Route::get('getQuotedProducts', [QuotedProductController::class, 'getQuotedProducts']);
     // Route::post('updateVendor/{id}', [VendorController::class, 'updateVendor']);
     // Route::post('deleteVendor/{id}', [VendorController::class, 'deleteVendor']);
     Route::post('storeQuote', [QuoteController::class, 'storeQuote']);
+});
+
+/** Rotas Cotações User */
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('user/getQuotedProducts', [QuotedProductController::class, 'getQuotedProducts']);
+    Route::get('user/getVendorPrices/', [QuotedProductController::class, 'getVendorPrices']);
+    Route::post('user/saveQuotePrice', [QuotedProductController::class, 'saveQuotePrice']);
 });
 
 /** Rotas autenticacao */

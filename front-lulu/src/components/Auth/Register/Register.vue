@@ -63,6 +63,8 @@ export default {
                     await this.login();
                     const isAdmin = response.data.user.isAdmin;
                     localStorage.setItem('isAdmin', isAdmin);
+                    const user = response.data.user;
+                    this.$store.commit('setUser', user);
 
                     if (isAdmin === 1) {
                         this.$router.push('/dashboard');
