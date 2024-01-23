@@ -11,6 +11,39 @@ use Illuminate\Http\Request;
 class QuotedProductController extends Controller
 {
 
+    public function getProductPrices($productId)
+    {
+        try {
+            $quoted = Quote::where('status', 'Aberta')->first();
+
+            $productPrices = QuotedProduct::where('quote_id', $quoted->id)
+                ->where('product_id', $productId)
+                ->with(['vendor'])
+                ->get(['vendor_id', 'price']);
+
+            return response()->json($productPrices);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function getLowestPrices()
+    {
+        try {
+            $quoted = Quote::where('status', 'Aberta')->first();
+
+            $lowestPrices = QuotedProduct::where('quote_id', $quoted->id)
+                ->with(['product', 'vendor'])
+                ->groupBy(['product_id', 'vendor_id'])
+                ->selectRaw('MIN(price) as min_price, product_id, vendor_id')
+                ->get();
+
+            return response()->json($lowestPrices);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+
     public function getQuotedProducts()
     {
         try {

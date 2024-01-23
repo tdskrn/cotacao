@@ -47,6 +47,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('getQuotes', [QuoteController::class, 'getQuotes']);
     Route::get('getQuotedProducts', [QuotedProductController::class, 'getQuotedProducts']);
+    Route::get('/getProductPrices/{productId}', [QuotedProductController::class, 'getProductPrices']);
+    Route::get('getLowestPrices', [QuotedProductController::class, 'getLowestPrices']);
     // Route::post('updateVendor/{id}', [VendorController::class, 'updateVendor']);
     // Route::post('deleteVendor/{id}', [VendorController::class, 'deleteVendor']);
     Route::post('storeQuote', [QuoteController::class, 'storeQuote']);
