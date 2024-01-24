@@ -7,6 +7,8 @@ import VendorsAdminView from '../views/Admin/VendorsAdminView.vue'
 import DashboardView from '../views/Admin/DashboardView.vue'
 import VendorsUserView from '../views/VendorsUserView.vue'
 import QuotationView from '../views/Admin/QuotationView.vue'
+import WinnersView from '../views/Admin/WinnersView.vue'
+import ConfigAdminView from '../views/Admin/ConfigAdminView.vue'
 
 const routes = [
     {
@@ -57,6 +59,30 @@ const routes = [
         path: '/quotations',
         name: 'quotations',
         component: QuotationView,
+        beforeEnter: (to, from, next) => {
+            if (userIsAdmin()) {
+                next()
+            } else {
+                next('/')
+            }
+        }
+    },
+    {
+        path: '/winners',
+        name: 'winners',
+        component: WinnersView,
+        beforeEnter: (to, from, next) => {
+            if (userIsAdmin()) {
+                next()
+            } else {
+                next('/')
+            }
+        }
+    },
+    {
+        path: '/config',
+        name: 'config',
+        component: ConfigAdminView,
         beforeEnter: (to, from, next) => {
             if (userIsAdmin()) {
                 next()

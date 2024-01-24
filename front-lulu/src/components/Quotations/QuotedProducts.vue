@@ -31,6 +31,7 @@ export default {
     },
     props: {
         quotedProducts: Array,
+        selectedQuotation: Object,
     },
 
     methods: {
@@ -43,6 +44,7 @@ export default {
                 });
 
                 if (Array.isArray(response.data)) {
+                    console.log(response.data);
                     this.lowestPrices = response.data;
                 } else {
                     console.error('A resposta do servidor não é um array:', response.data);
@@ -52,7 +54,9 @@ export default {
             }
         },
         getMinPrice(productId) {
-            const productPrices = this.lowestPrices.filter(price => price.product_id === productId);
+            console.log(this.selectedQuotation.id)
+            const productPrices = this.lowestPrices.filter(price => price.product_id === productId && price.quote_id === this.selectedQuotation.id);
+
             if (productPrices.length === 0 || isNaN(parseFloat(productPrices[0].min_price))) {
                 return 'N/A';
             }

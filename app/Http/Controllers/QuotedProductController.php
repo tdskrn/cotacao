@@ -44,9 +44,39 @@ class QuotedProductController extends Controller
         }
     }
 
+    public function getClosedQuotedProducts(Request $request, $id)
+    {
+        try {
+            $closedQuoteProducts = QuotedProduct::whereHas('quote', function ($query) use ($id) {
+                $query->where('id', $id)->where('status', 'Fechada');
+            })->with(['product'])->get();
+
+            return response()->json($closedQuoteProducts);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function getQuotedProductsAdmin($id)
+    {
+        try {
+
+            $quoted = Quote::find($id);
+
+            if (!$quoted) {
+                return response()->json(['error' => 'Cotação não encontrada.']);
+            };
+            $products = Product::where('isQuoted', 1)->get();
+
+            return response()->json($products);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
     public function getQuotedProducts()
     {
         try {
+
             $products = Product::where('isQuoted', 1)->get();
 
             return response()->json($products);

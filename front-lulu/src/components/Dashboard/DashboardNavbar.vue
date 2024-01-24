@@ -3,6 +3,8 @@
         <router-link to="/products"> Produtos</router-link>
         <router-link to="/vendors-admin"> Vendedores</router-link>
         <router-link to="/quotations"> Cotações</router-link>
+        <router-link to="/winners">Vencedores </router-link>
+        <router-link to="/config">Configurações</router-link>
 
         <button @click="logout()">
             Logout
@@ -55,4 +57,4 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped></style>

@@ -21,12 +21,16 @@
                     <button @click="getQuotedProducts(quote)">
                         Open
                     </button>
+                    <button @click="closeQuote(quote)">
+                        Close
+                    </button>
                 </td>
             </tr>
         </tbody>
     </table>
     <NewQuotationModalVue v-show="editMode"></NewQuotationModalVue>
-    <QuotedProductsVue v-if="selectedQuotation" :quotedProducts="quotationProducts" />
+    <QuotedProductsVue v-if="selectedQuotation" :selectedQuotation="selectedQuotation"
+        :quotedProducts="quotationProducts" />
 </template>
 
 <script>
@@ -73,13 +77,44 @@ export default {
         async getQuotedProducts(quote) {
             this.selectedQuotation = quote;
 
-            axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/getQuotedProducts`, {
+
+            if (quote.status === 'Aberta') {
+                axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/getQuotedProducts/${quote.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${this.token}`
+                    }
+                }).then((response) => {
+                    console.log(response.data);
+                    this.quotationProducts = response.data;
+                })
+            } else if (quote.status === "Fechada") {
+
+                axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/getClosedQuotedProducts/${quote.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${this.token}`
+                    }
+                }).then((response) => {
+
+                    const products = response.data.map(quotedProduct => quotedProduct.product);
+
+                    this.quotationProducts = products;
+                })
+            }
+        },
+
+
+
+        closeQuote(quote) {
+            axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/closeQuotes`, {
+                quote_id: quote.id,
+                status: 'Fechada',
+            }, {
                 headers: {
                     'Authorization': `Bearer ${this.token}`
                 }
             }).then((response) => {
-                console.log(response.data);
-                this.quotationProducts = response.data;
+                console.log(response);
+                this.getQuotes();
             })
         },
 

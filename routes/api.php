@@ -46,7 +46,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 /** Rotas Cotações Admin */
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('getQuotes', [QuoteController::class, 'getQuotes']);
-    Route::get('getQuotedProducts', [QuotedProductController::class, 'getQuotedProducts']);
+    Route::post('closeQuotes', [QuoteController::class, 'closeQuotes']);
+    Route::get('getQuotedProducts/{id}', [QuotedProductController::class, 'getQuotedProductsAdmin']);
+    Route::get('getQuotedProducts/', [QuotedProductController::class, 'getQuotedProducts']);
+    Route::get('getClosedQuotedProducts/{id}', [QuotedProductController::class, 'getClosedQuotedProducts']);
     Route::get('/getProductPrices/{productId}', [QuotedProductController::class, 'getProductPrices']);
     Route::get('getLowestPrices', [QuotedProductController::class, 'getLowestPrices']);
     // Route::post('updateVendor/{id}', [VendorController::class, 'updateVendor']);

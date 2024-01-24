@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Quote;
 use Illuminate\Http\Request;
 
@@ -25,6 +26,18 @@ class QuoteController extends Controller
                 'end_date' => $request->end_date,
             ]);
             return response()->json('Success');
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function closeQuotes(Request $request)
+    {
+
+        try {
+            Quote::where('id', $request->quote_id)->update(['status' => $request->status]);
+            Product::where('isQuoted', 1)->update(['isQuoted' => 0]);
+            return response()->json('Cotacao e produtos atualizados com sucesso');
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }

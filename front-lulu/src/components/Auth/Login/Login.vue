@@ -1,17 +1,17 @@
 <template>
     <h1>Login Sistema Cotação</h1>
     <div>
-        <form action="">
+        <form action="" method="POST" @submit.prevent="login()">
             <div>
                 <label for="email">Email</label>
                 <input v-model="email" type="text">
             </div>
             <div>
                 <label for="password">Password</label>
-                <input v-model="password" type="text">
+                <input v-model="password" type="password">
             </div>
             <div>
-                <button @submit.prevent @click="login()">
+                <button>
                     Login
                 </button>
             </div>
